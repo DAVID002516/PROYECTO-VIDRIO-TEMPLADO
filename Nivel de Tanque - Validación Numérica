@@ -1,0 +1,74 @@
+% Proyecto final - Nivel de Tanque - Templado de Vidrio
+% Modelo Original: Sergio Castaño, Julio Elias Normey Rico
+% Modificaciones hechas en este trabajo por:
+%David S. Torres Torres
+%Edgar Colque Lopez
+%Denilson Vilcapaza Goyzueta
+%Jhoel Rene Mamani Huanca
+%Rony Miguel Yanapa Ccoarite
+
+Dinamica del Nivel del Tanque 
+clc
+clear all
+close all
+%Variación del tanque
+k1=0.05;
+k2=0.015;%Consta
+g=10; %Constante de gravedad
+A=0.5;
+a1=0.0:0.1:1;   %Apertura de la valvula de entrada
+a2=0:0.1:1;     %Abertura de la valvula de salida
+k=1;
+A1o=0.6; %Avertura de la valvula en el punto de equilibrio
+A2o=0.5; %Abertura de la valvula en el punto de salida
+%Ancho del punto de equilibrio del tanque
+Ho=(k1^2*A1o^2)/(k2^2*A2o^2*2*g);
+%Grafica del comportamiento lineal del tanque con respecto a la valvula
+% de entrada o de salida o viceversa.
+for i=1:11
+    hA1(i)=(k1^2*a1(i)^2)/(k2^2*A2o^2*2*g);
+    hA2(i)=(k1^2*A1o^2)/(k2^2*a2(i)^2*2*g);
+    k=k+1;
+end
+figure
+t=0:0.1:1;
+subplot(2,1,1);
+plot(t,hA1),grid
+axis([0 1 0 1]);
+title('Variación en la valvula de entrada a1');
+ylabel('Altura (h)');
+xlabel('Abertura de la valvula a1');
+subplot(2,1,2);
+plot(t,hA2),grid
+axis([0 1 0 1]);
+title('Variación en la valvula de entrada a2');
+ylabel('Altura (h)');
+xlabel('Abertura de la valvula a2');
+
+Processo de Simulación
+tsim=300;       %tiempo de simulación
+tA1=10;         %Tiempo en que la variación de a1 se ejecuta
+tA2=150;        %Tiempo en que la variación de a2 se ejecuta
+dA1=0.02;       %Variación en a1
+dA2=0.03;       %Variación en a2
+%Simulación
+sim('tanque');
+%Grafica de los resultados
+figure
+subplot(3,1,1);
+plot(t,rY(:,1),t,rY(:,3)),grid
+title('Nivel del Tanque');
+ylabel('Altura (h)');
+xlabel('Tiempo (s)');
+legend('No Linear','Linear');
+subplot(3,1,2);
+plot(t,rY(:,2)),grid
+title('Abertura en a1');
+ylabel('% a1');
+xlabel('Tiempo (s)');
+subplot(3,1,3);
+plot(t,rY(:,4)),grid
+title('Abertura en a2');
+ylabel('% a2');
+xlabel('Tiempo (s)');
+clc
